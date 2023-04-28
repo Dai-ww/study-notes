@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .parent {
+        margin: auto;
+        width: 500px;
+        height: 500px;
+        background: pink;
+        /* 1、flex 布局 */
+        /* display: flex;
+        align-items: center;
+        justify-content: center;
+        或者父元素设置为flex 子元素设置 margin:auto
+        */
+        position: relative;
+      }
+      .son {
+        width: 100px;
+        height: 100px;
+        background: rgb(24, 136, 44);
+        position: absolute;
+        /* 2、定位+ transform */
+        /* top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); */
+        /* 3、定位+ margin auto */
+        /* left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto; */
+        /* 4、定位+ margin负边距 */
+        /* top: 50%;
+        left: 50%;
+        margin-left: -50px;
+        margin-top: -50px; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="parent">
+      <div class="son"></div>
+    </div>
+    <script></script>
+  </body>
+</html>
