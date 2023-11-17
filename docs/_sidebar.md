@@ -4,12 +4,12 @@
 
 - HTML、CSS 系列
 
-  - [html](/html,css系列/html.md)
-  - [css](/html,css系列/css.md)
+  - [html、css](/html,css系列/index.md)
 
 - JavaScript 系列
 
   - [js](/JavaScript系列/js.md)
+  - [ts](/JavaScript系列/ts.md)
 
 - VUE 系列
 
@@ -23,10 +23,6 @@
 
   - [wechat](/小程序系列/wechat.md)
 
-- TypeScript 系列
-
-  - [ts](/TypeScript系列/ts.md)
-
 - Http 系列
 
   - [http](http系列/http.md)
@@ -37,7 +33,7 @@
 
 - 打包工具 系列
 
-  - [webpack](/打包工具系列/webpack.md)
+  - [打包](/打包工具系列/index.md)
 
 - 版本控制 系列
 
@@ -50,5 +46,3 @@
 - 算法与数据结构 系列
 
   - [algorithm](/算法与数据结构系列/algorithm.md)
-
-
