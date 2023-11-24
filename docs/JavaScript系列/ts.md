@@ -17,7 +17,7 @@
 
 **不同点：**
 
-3. type 可以声明基本类型，联合类型，元组
-4. type 可以使用 typeof 获取实例的类型进行赋值
-5. 多个相同的 interface 声明可以自动合并
-   使用 interface 描述‘数据结构’，使用 type 描述‘类型关系’
+1. type 可以声明任何类型，inter face 只能声明对象
+2. type 不能继承，interface 能继承
+3. 同名 type 只能有一个，同名 interface 可以多个
+4. 使用 interface 描述‘数据结构’，使用 type 描述‘类型关系’

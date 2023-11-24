@@ -25,7 +25,8 @@
 
 - Http 系列
 
-  - [http](http系列/http.md)
+  - [http](计算机网络/http.md)
+  - [browser](计算机网络/browser.md)
 
 - Nodejs 系列
 
@@ -35,14 +36,14 @@
 
   - [打包](/打包工具系列/index.md)
 
-- 版本控制 系列
+- 前端工程化
 
-  - [git](版本控制系列/git.md)
+  - [git](前端工程化/git.md)
 
 - 操作系统 系列
 
   - [linux](/操作系统系列/linux.md)
 
-- 算法与数据结构 系列
+- 其他
 
-  - [algorithm](/算法与数据结构系列/algorithm.md)
+  - [other](/其他/index.md)

@@ -1,36 +1,21 @@
-Object wx.getAccountInfoSync()// 获取当前帐号信息
-const accountInfo = uni.getAccountInfoSync();
-// env 类型
-export const env = accountInfo.miniProgram.envVersion;
-console.log(env);
-if(!env){
-console.error("获取运行环境失败!");
-}
+### 使用 miniprogram-ci 结合云效流水线 进行小程序代码的上传、预览等操作。
 
-const baseApi = {
-// 开发版
-develop: process.env.VUE_APP_BASEURL_DEV,
-// 体验版
-trial: process.env.VUE_APP_BASEURL_PREV,
-// 正式版
-release: process.env.VUE_APP_BASEURL_PROD
-};
+- 自动化配置
 
-// request 请求 baseURL
-export const baseURL = baseApi[env];
-使用 miniprogram-ci 结合云效流水线 进行小程序代码的上传、预览等操作。const ci = require('miniprogram-ci');
-const path = require('path');
-//解析命令行参数
-function parse(args = []) {
-let news = [];
-args.forEach((item) => {
-let h = item.substring(2).split('=');
-news.push({ name: h[0], value: h[1] });
-});
-const obj = Object.fromEntries(news.map(item => [item.name, item]));
-return obj;
-}
-const arg = parse(process.argv.slice(2));
+```js
+  const ci = require('miniprogram-ci');
+  const path = require('path');
+  //解析命令行参数
+  function parse(args = []) {
+  let news = [];
+  args.forEach((item) => {
+  let h = item.substring(2).split('=');
+  news.push({ name: h[0], value: h[1] });
+  });
+  const obj = Object.fromEntries(news.map(item => [item.name, item]));
+  return obj;
+  }
+  const arg = parse(process.argv.slice(2));
 
 (async () => {
 const project = new ci.Project({
@@ -57,4 +42,32 @@ ignores: ['node_modules/**/*'],
     console.log(uploadResult);
 
 })()
-"upload": "node ./deploy/upload.js",
+```
+
+- 在 package.json 文件中配置命令
+  "upload": "node ./deploy/upload.js",
+
+### 获取小程序当前所属环境
+
+```js
+Object wx.getAccountInfoSync()// 获取当前帐号信息
+const accountInfo = uni.getAccountInfoSync();
+// env 类型
+export const env = accountInfo.miniProgram.envVersion;
+console.log(env);
+if(!env){
+console.error("获取运行环境失败!");
+}
+
+const baseApi = {
+// 开发版
+develop: process.env.VUE_APP_BASEURL_DEV,
+// 体验版
+trial: process.env.VUE_APP_BASEURL_PREV,
+// 正式版
+release: process.env.VUE_APP_BASEURL_PROD
+};
+
+// request 请求 baseURL
+export const baseURL = baseApi[env];s
+```

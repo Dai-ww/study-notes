@@ -28,7 +28,7 @@
 
 ### 闭包
 
-> 在 JavaScript 中，函数即闭包，只有函数才会产生作用域。（函数被引用包围）
+> 在 JavaScript 中，函数即闭包，只有函数才会产生作用域。（函数被引用包围）简单理解：函数 A 返回了一个函数 B，并且函数 B 中使用了函数 A 的变量，函数 B 就被称为闭包。 闭包: 有权访问另一个函数作用域中的变量的函数。
 
 - 作用：使用闭包主要是为了设计私有的方法和变量。
 - 优缺点：闭包的优点是可以避免全局变量的污染；缺点是闭包会常驻内存，增加内存的使用量，使用不当很容易
@@ -42,7 +42,8 @@
 ```js
 1、函数防抖
 2、设置私有变量
-3、拿到正确的值：
+3、函数作为参数
+4、拿到正确的值：
 for(var i=0;i<10;i++){
     setTimeout(function(){
         console.log(i)//10个10
@@ -68,6 +69,8 @@ for(var i=0;i<10;i++){
 ### 原型和原型链
 
 ##### 原型
+
+原型就是把公共的方法和属性放在函数的原型对象 prototype 上 原型链就是实例对象上面会有一个私有属性**proto**，这个属性会指向原型对象 prototype，让实例对象也能拥有原型对象的方法和属性，同时原型对象的**proto**会指向父一级的原型对象，最终指向 null
 
 - 在 JavaScript 中，每当定义一个函数数据类型(普通函数、类)时候，都会天生自带一个 prototype 属性，
   这个属性指向函数的原型对象，并且这个属性是一个对象数据类型的值。
@@ -132,6 +135,7 @@ function throttled(fn, delay) {
 
 1. 滚动加载，加载更多或滚到底部监听
 2. 搜索框，搜索联想功能
+3. 拖拽时候的 mousemove 射击游戏中的 mousedown、keydown 事件 文字输入、自动完成的 keyup 事件
 
 ### 什么是跨域，如何解决跨域？
 
@@ -177,6 +181,24 @@ function throttled(fn, delay) {
 2. 将构造函数内部的 this 赋值创建的空对象，用构造函数的内部方法修改空对象。
 3. 将创建的对象的原型指向构造函数的原型。
 4. 返回一个对象（如果构造函数本身有返回值且是对象类型，就返回本身的返回值，如果没有才返回新对象）
+
+```js
+Function.prototype._new = function (fn, ...args) {
+  var obj = Object.create(fn.prototype);
+  var ret = fn.apply(obj, args);
+  return ret instanceof Object ? ret : obj;
+};
+
+// 或者
+Function.prototype._new = function () {
+  var obj = {};
+  var Constructor = Array.prototype.shift.call(arguments);
+
+  obj.__proto__ = Constructor.prototype;
+  var result = Constructor.call(obj, arguments);
+  return result instanceof Object ? result : obj;
+};
+```
 
 ### 如何实现请求的数量控制
 
@@ -242,4 +264,241 @@ async function run(){
     }
 }
 run();
+```
+
+### 箭头函数和普通函数区别
+
+1. 主要是 this 指向不同，箭头函数 this 是从自己的作用域链的上一层继承的，使用上层作用域的 this。
+2. 箭头函数不能作为构造函数，因为没有 this，new 要把函数的 prototype 赋值给 this 的`__ proto __`
+
+### js 中 bind、call、apply 之间区别
+
+都是用来改变 this 指向的，bind 返回一个函数，需要主动去调用，call、apply 立即执行，但是传递参数不同，apply 传递数组，call 是从第二个参数一次传入
+
+### es5 继承 与 es6 继承
+
+- ES5 的继承是通过原型或构造函数机制实现的；它先创建子类，再实例化父类并添加到子类 this 中。
+- ES6 先创建父类，再实例化子集中通过调用 super 方法访问父级后，再通过修改 this 实现继承。
+
+### js 实现继承的方式
+
+- 原型链继承：将父类的实例作为子类的原型
+- 借助构造函数：用父类的构造函数来增强子类实例
+- 组合继承
+- class 继承
+
+### 深浅拷贝
+
+- 浅拷贝：如果拷贝的是基本数据类型，拷贝的就是值，引用数据类型拷贝的是内存地址。如果其中一个对象的引用内存地址发生改变，另一个对象也会发生变化。
+
+  1. Object.assign() Object.assign(target, ...sources)
+  2. 扩展运算符 let cloneObj = { ...obj };
+  3. Array.prototype.slice() Array.prototype.concat()
+  4. 手写
+
+  ```js
+  // 浅拷贝的实现;
+  function shallowCopy(object) {
+    // 只拷贝对象
+    if (!object || typeof object !== 'object') return;
+    // 根据 object 的类型判断是新建一个数组还是对象
+    let newObject = Array.isArray(object) ? [] : {};
+    // 遍历 object，并且判断是 object 的属性才拷贝
+    for (let key in object) {
+      if (object.hasOwnProperty(key)) {
+        newObject[key] = object[key];
+      }
+    }
+    return newObject;
+  }
+  ```
+
+- 深拷贝：对于简单数据类型直接拷贝他的值，对于引用数据类型，在堆内存中开辟一块内存用于存放复制的对象，并把原有的对象类型数据拷贝过来，这两个对象相互独立，属于两个不同的内存地址，修改其中一个，另一个不会发生改变。
+
+  1. JSON.parse(JSON.stringify(obj)) let obj2 = JSON.parse(JSON.stringify(obj1));
+  2. lodash 函数库 var obj2 = \_.cloneDeep(obj1);
+  3. 手写
+
+  ```js
+  function deepClone(obj, hash = new WeakMap()) {
+    // 日期对象直接返回一个新的日期对象
+    if (obj instanceof Date) {
+      return new Date(obj);
+    }
+    //正则对象直接返回一个新的正则对象
+    if (obj instanceof RegExp) {
+      return new RegExp(obj);
+    }
+    //如果循环引用,就用 weakMap 来解决
+    if (hash.has(obj)) {
+      return hash.get(obj);
+    }
+    // 获取对象所有自身属性的描述
+    let allDesc = Object.getOwnPropertyDescriptors(obj);
+    // 遍历传入参数所有键的特性
+    let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc);
+
+    hash.set(obj, cloneObj);
+    for (let key of Reflect.ownKeys(obj)) {
+      if (typeof obj[key] === 'object' && obj[key] !== null) {
+        cloneObj[key] = deepClone(obj[key], hash);
+      } else {
+        cloneObj[key] = obj[key];
+      }
+    }
+    return cloneObj;
+  }
+  ```
+
+  ### Ajax 原理
+
+  > 通过 XMLHttpRequest 对象来向服务器发起异步请求，从服务器获得数据然后通过 JS 操作 dom 从而刷新页面
+
+- 原声写 ajax
+
+```js
+var xhr = new XMLHttpRequest();
+xhr.open('get', url, true);
+xhr.send(null);
+xhr.onreadystatechange = function () {
+  if (xhr.readyState === 4) {
+    if (xhr.status == 200) {
+      success(xhr.responseText);
+    } else {
+      fail && fail(xhr.status);
+    }
+  }
+};
+```
+
+- jquery ajax
+
+```js
+$.ajax({
+  url: '',
+  Type: '',
+  data: '',
+  dataType: '',
+  success: function (data) {},
+  error: function (err) {},
+});
+```
+
+**优点**:通过异步，提升用户的体验，减少不必要的数据往返，实现局部刷新
+**缺点**:对搜索引擎支持比较弱
+
+### 数组
+
+- 常用方法
+  ```js
+  - 增：push()、unshift()、concat()、splice(index,0,value...)
+  - 删：pop()、shift()、splice(index,howmany)
+  - 查：indexOf() 、includes()、slice(start,end)
+  - 改：splice()
+  - 其他： join(seprate)、sort()、reverse()、educe()、Math.min(arr...)、Math.max(arr...)
+  - 遍历：forEach()、for of / for in、map()、some()、every()、find()、findIndex()、filter()
+  ```
+- for in 与 for of 区别
+
+1. for...in 循环：只能获得对象的键名，不能获得键值
+   for...of 循环：允许遍历获得键值
+
+2. for...in 循环主要是为了遍历对象而生，不适用于遍历数组
+   for...of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象
+
+3. for...in 循环不仅遍历数字键名，还会遍历手动添加的其它键，甚至包括原型链上的键。for...of 则不会这样
+   for in 遍历的是数组的索引（即键名），而 for of 遍历的是数组元素值。
+
+- 是否改变原数组
+
+  - 当数组中元素是值类型，map 不会改变原数组；当是引用类型，则可以改变原数组
+  - concat、slice 不会改变原数组
+
+- 数组去重
+
+```js
+1.通过set去重
+arrayA=new Set();
+2.利用for嵌套for，然后splice去重
+双层循环，外层循环元素，内层循环时比较值。值相同时，则删去这个值
+function unique(arr){
+        for(var i=0; i<arr.length; i++){
+            for(var j=i+1; j<arr.length; j++){
+                if(arr[i]==arr[j]){         //第一个等同于第二个，splice方法删除第二个
+                    arr.splice(j,1);
+                    j--;
+                }
+            }
+        }
+return arr;
+}
+3. indexOf() 去重
+新建一个空的结果数组，for 循环原数组，判断结果数组是否存在当前元素，如果有相同的值则跳过，
+不相同则push进数组。
+function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var array = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (array .indexOf(arr[i]) === -1) {
+            array .push(arr[i])
+        }
+    }
+    return array;
+}
+4.利用includes
+function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    var array =[];
+    for(var i = 0; i < arr.length; i++) {
+            if( !array.includes( arr[i]) ) {//includes 检测数组是否有某个值
+                    array.push(arr[i]);
+              }
+    }
+    return array
+}
+function distinct(arr) {
+    let result = []
+    for (let i of arr) {
+        !result.includes(i) && result.push(i)
+    }
+    return result
+}
+5.  sort（）  相邻元素去重
+然后根据排序后的结果进行遍历及相邻元素比对，如果相等则跳过改元素，直到遍历结束
+function unique(arr) {
+    if (!Array.isArray(arr)) {
+        console.log('type error!')
+        return
+    }
+    arr = arr.sort()
+    let res = []
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] !== arr[i-1]) {
+            res.push(arr[i])
+        }
+    }
+    return res
+}
+6、for...of + Object
+方法思路：首先创建一个空对象，然后用 for 循环遍历，利用对象的属性不会重复这一特性，
+校验数组元素是否重复
+function distinct(a, b) {
+    let arr = a.concat(b)
+    let result = []
+    let obj = {}
+
+    for (let i of arr) {
+        if (!obj[i]) {
+            result.push(i)
+            obj[i] = 1
+        }
+    }
+    return result
+}
 ```
