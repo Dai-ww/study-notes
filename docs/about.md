@@ -2,7 +2,7 @@
 
 ### I’m Dai
 
-Undergraduate students majoring in Data Science and Big Data Technology
+Graduated from the Internet of Things Engineering major at Zhixing College, Hubei University
 
 - :paw_prints: I’m interested in JavaScript
 - 🌱 Currently learning in REACT

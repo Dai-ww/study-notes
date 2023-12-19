@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const apples = [1, 2, 3, 5, 2];
+      const days = [3, 2, 1, 5, 1];
+      // 先算出最大保质期 多少天，然后看每一天又没有苹果可以吃
+      var eatenApples = function (apples, days) {
+        // 最大保质期为限制逐天遍历
+        const limits = Array.from(days, (x, k) => x + k);
+        console.log(limits);
+        const freshArr = new Array(Math.max(...limits)).fill(0);
+        let res = 0;
+        for (let i = 0; i < freshArr.length; i++) {
+          if (i < apples.length) {
+            // 计算 在过期当天前有多少苹果
+            freshArr[i + days[i] - 1] =
+              (freshArr[i + days[i] - 1] || 0) + apples[i];
+          }
+          console.log(freshArr, 'freshArr');
+          for (let j = i; j < freshArr.length; j++) {
+            // 如果在保质期前有苹果，就吃掉
+            if (freshArr[j] > 0) {
+              freshArr[j]--;
+              res++;
+              break;
+            }
+          }
+        }
+        return res;
+      };
+      console.log(eatenApples(apples, days));
+    </script>
+  </body>
+</html>

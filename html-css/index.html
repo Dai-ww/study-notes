@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // var getDecimalValue = function (head) {
+      //   let sum = 0;
+      //   const arr = listNodeToArray(head);
+      //   for (let i = 0; i < arr.length; ) {
+      //     sum += 2 ** i * arr[i];
+      //     i++;
+      //   }
+      //   return sum;
+      // };
+
+      // function listNodeToArray(node) {
+      //   const list = [];
+      //   let header = node;
+      //   while (header !== null) {
+      //     list.push(header.val);
+      //     header = header.next;
+      //   }
+      //   return list;
+      // }
+      // console.log(getDecimalValue());
+      // const rowIndex = 4;
+      // var getRow = function (rowIndex) {
+      //   const res = new Array(rowIndex + 1);
+      //   res[0] = 1;
+      //   for (let i = 0; i < rowIndex + 1; i++) {
+      //     res[0] = res[i] = 1;
+      //     for (let j = i - 1; j >= 1; j--) {
+      //       res[j] = res[j] + res[j - 1];
+      //     }
+      //   }
+      //   console.log(res);
+      // };
+      // getRow(rowIndex);
+      const rowIndex = 4;
+      var getRow = function (rowIndex) {
+        const res = new Array(rowIndex);
+        for (let i = 0; i < rowIndex; i++) {
+          res[i] = new Array(i);
+          res[i][0] = res[i][i] = 1;
+          for (let j = 1; j < i; j++) {
+            res[i][j] = res[i - 1][j - 1] + res[i - 1][j];
+          }
+        }
+        return res;
+      };
+      console.log(getRow(rowIndex));
+    </script>
+  </body>
+</html>
