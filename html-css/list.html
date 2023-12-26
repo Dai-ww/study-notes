@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function array2list(arr) {
+        if (!arr || !arr.length) {
+          return null;
+        }
+        var head = { value: arr[0], next: null };
+        var p = head;
+        for (var i = 1; i < arr.length; i++) {
+          var node = { value: arr[i], next: null };
+          p.next = node;
+          p = node;
+        }
+        return head;
+      }
+
+      var deleteDuplicates = function (arg) {
+        const head = array2list(arg);
+        if (!head) {
+          return head;
+        }
+        let cur = head;
+        while (cur.next) {
+          if (cur.value === cur.next.value) {
+            cur.next = cur.next.next;
+          } else {
+            cur = cur.next;
+          }
+        }
+        return head;
+      };
+
+      console.log(
+        deleteDuplicates([
+          1, 1, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10,
+        ])
+      );
+    </script>
+  </body>
+</html>

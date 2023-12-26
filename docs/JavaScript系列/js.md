@@ -549,4 +549,79 @@ defer : 并行下载 js，会按照页面上的 script 标签的顺序执行，�
 - CommonJS 模块输出的是一个值的拷贝，ES6 模块输出的是值的动态映射。在 commonJs 中如果模块被加载过，就不会重新去加载模块，又因为输出了是值的拷贝，所以模块中值的变化不会影响引入的地方。
 - 循环依赖的情况下，CommonJs 因为获得值的副本，在循环依赖情况模块未执行完成的话，可能获取不到正确的值。而 es6 的特性更好的支持循环依赖的场景。
 
-### AMD、CMD、CommonJS 和 ESM 的区别和应用场景。
+### 如何判断链表是否有环
+
+- 快慢指针
+  快指针和慢指针一起指向头节点。快指针每次走 2 步，慢指针每次走 1 布，直到走到尾节点。若快指针与慢指针相遇，则说明链表中有环；若不相遇，则说明链表中无环
+
+```js
+function isLinkCycle(head) {
+  const p1 = head;
+  const p2 = head;
+  while (p2 !== null && p2.next !== null) {
+    p1 = p1.next;
+    p2 = p2.next.next;
+    if (p1 === p2) {
+      return true;
+    }
+    return false;
+  }
+}
+```
+
+### 介绍暂时性死区
+
+暂时性死区是指在代码执行期间，变量已经声明，但是还没有赋值，这段时间内不能访问该变量。
+
+```js
+(function fn() {
+  //函数作用域开始
+  console.log(temp); //undefined
+  //声明
+  var temp;
+  console.log(temp); //undefined
+  //赋值
+  temp = 123;
+  console.log(temp); //123
+})();
+//在函数作用域外访问
+console.log(temp); //ReferenceError: temp is not defined
+
+{
+  //函数作用域开始，TDZ开始
+  console.log(temp); //ReferenceError: temp is not defined
+  //声明
+  let temp;
+  console.log(temp); //ReferenceError: Cannot access 'temp' before initialization
+  //赋值
+  temp = 345; //TDZ结束
+  console.log(temp); //345
+  //块级作用域结束
+}
+//在块级作用域外访问
+console.log(temp); //ReferenceError: temp is not defined
+```
+
+### 页面上有 1w 个 button 如何绑定事件
+
+事件委托：利用冒泡机制，将事件委托给父元素，父元素负责处理所有子元素的事件。
+
+### js 哪些操作会造成内存泄漏
+
+1. 一个未声明变量的使用，会在全局对象中创建一个新的变量 （use strict）
+2. 计时器和回调函数 timers （clear 掉）
+3. DOM 泄漏 给 DOM 添加的属性是一个对象的引用（在 window.onload 时间中加上 document.getElementById('id').diyProp = null）
+4. js 闭包 （闭包会将父函数的作用域链保存起来，导致父函数的作用域链无法被回收，造成内存泄漏）
+5. 事件监听器（addEventListener）
+6. console
+
+### js 的执行上下文有哪些
+
+- 全局执行上下文：它是为运行代码主体而创建的执行上下文，也就是说它是为那些存在于函数之外的任何代码而创建的。
+- 函数执行上下文：每个函数会在执行的时候创建自己的执行上下文。
+- Eval 函数执行上下文：使用 eval() 函数也会创建一个新的执行上下文。
+
+### js BOM 和 DOM 区别
+
+BOM：浏览器对象模型，提供浏览器的全局对象，如 window、document、navigator、screen、history 等。
+DOM：文档对象模型，提供文档的对象，如 document、element、event 等。
