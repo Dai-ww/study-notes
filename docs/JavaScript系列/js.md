@@ -625,3 +625,10 @@ console.log(temp); //ReferenceError: temp is not defined
 
 BOM：浏览器对象模型，提供浏览器的全局对象，如 window、document、navigator、screen、history 等。
 DOM：文档对象模型，提供文档的对象，如 document、element、event 等。
+
+### map 和 forEach 的区别
+
+1. forEach()方法不会返回执行结果，而是 undefined。也就是说，forEach()会修改原来的数组。而 map()方法会得到一个新的数组并返回
+2. 能用 forEach()做到的，map()同样可以。反过来也是如此
+3. forEach()允许 callback 更改原始数组的元素。map()返回新的数组
+
