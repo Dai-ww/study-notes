@@ -514,3 +514,15 @@ export default ChildJ
   console.log(state) // {id:1,name:"zora"}
   ```
   **提示：**<HashRouter> 不支持 location.key 与 location.state，<HashRouter>通过 state 传递参数，刷新页面后参数丢失，官方建议使用<BrowserRouter>，<BrowserRouter>页面刷新参数也不会丢失
+
+### hooks 使用
+
+- 在 if 中报错  
+  因为 react 函数式组件每次渲染都会重新生成状态，且每次渲染都有一个状态序列，如果在 if 中调用，可能导致某次渲染时状态序列的缺失
+- 为什么 react 函数式组件 每次渲染都有一个状态序列
+  因为在使用 useState 声明时，只赋给了变量初始值，并没有给状态加 key
+- 在循环中不能使用
+  循环中也是条件语句
+- 那在 vue3 中为什么不存在这个问题
+  因为 vue3 的渲染函数只执行一次，在组件初次渲染的时候，会执行一次 setup 函数并创建响应式对象（返回的是一个函数），然后使用闭包进行缓存，后续组件会直接使用缓存的渲染函数
+  react 返回的是一个视图，本质上是一个对象

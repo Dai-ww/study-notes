@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //实现lodash的get方法
+
+      const object = { a: [{ b: { c: 3 } }] };
+      // object 要检索的对象
+      // path 要获取属性的路径
+      // defaultValue 如果解析值是undefined，这个值会被返回
+      // console.log(getObject(object, 'a[0].b.c'));
+      // function getObject(object, path, defaultValue = 'haha') {
+      //   let key = Array.isArray(path)
+      //     ? path
+      //     : path.replace(/(\[(\d)\])/g, '.$2').split('.');
+      //   console.log(key, 'key');
+      //   object = object[key[0]];
+      //   console.log(object, 'object');
+      //   if (object && key.length > 1) {
+      //     return getObject(object, key.slice(1), defaultValue);
+      //   }
+      //   return object || defaultValue;
+      // }
+      // function getObject(object, path, defaultValue = 'haha') {
+      //   let key = Array.isArray(path)
+      //     ? path
+      //     : path.replace(/\[/g, '.').replace(/\]/g, '').split('.');
+      //   // console.log(key, 'key');
+      //   const result = key.reduce((pre, cur) => {
+      //     console.log({ pre, cur });
+      //     if (pre[cur] === undefined) {
+      //       return defaultValue;
+      //     }
+      //     return pre[cur];
+      //   }, object);
+
+      //   return result || defaultValue;
+      // }
+
+      function getObject(object, path, defaultValue = 'undefined') {
+        let key = Array.isArray(path)
+          ? path
+          : path.replace(/(\[(\d)\])/g, '.$2').split('.');
+        console.log(key);
+        const result = key.reduce((pre, cur) => {
+          if (pre[cur] == undefined) {
+            return defaultValue;
+          }
+          return pre[cur];
+        }, object);
+        return result || defaultValue;
+      }
+
+      // 写一个红绿灯
+      // let timer = null;
+      // const sleep = (time, ligth) => {
+      //   return new Promise((resolve, reject) => {
+      //     console.log(ligth);
+      //     clearInterval(timer);
+      //     timer = setInterval(() => {
+      //       console.log(ligth);
+      //     }, 1000);
+      //     setTimeout(() => {
+      //       resolve();
+      //     }, time);
+      //   });
+      // };
+      // async function trafficLight() {
+      //   await sleep(5000, 'red');
+      //   await sleep(3000, 'yellow');
+      //   await sleep(8000, 'green');
+      //   clearInterval(timer);
+      //   // trafficLight();
+      // }
+      // trafficLight();
+
+      function red() {
+        console.log('red');
+      }
+      function green() {
+        console.log('green');
+      }
+      function yellow() {
+        console.log('yellow');
+      }
+      let timer = null;
+      function ligth(time, fn) {
+        return new Promise((resolve, reject) => {
+          //打印
+          // clearInterval(timer);
+          // timer = setInterval(() => {
+          //   fn();
+          // }, 1000);
+          fn();
+          setTimeout(() => {
+            resolve();
+          }, time);
+        });
+      }
+      async function trafficLight() {
+        await ligth(5000, red);
+        await ligth(3000, yellow);
+        await ligth(8000, green);
+        // clearInterval(timer);
+      }
+      trafficLight();
+
+      // function red() {
+      //   console.log('red');
+      // }
+      // function green() {
+      //   console.log('green');
+      // }
+      // function yellow() {
+      //   console.log('yellow');
+      // }
+      // const light = function (timer, cb) {
+      //   return new Promise((resolve) => {
+      //     cb();
+      //     setTimeout(() => {
+      //       resolve();
+      //     }, timer);
+      //   });
+      // };
+      // const step = function () {
+      //   Promise.resolve()
+      //     .then(() => {
+      //       return light(3000, red);
+      //     })
+      //     .then(() => {
+      //       return light(2000, green);
+      //     })
+      //     .then(() => {
+      //       return light(1000, yellow);
+      //     })
+      //     .then(() => {
+      //       return step();
+      //     });
+      // };
+
+      // step();
+
+      const obj = {
+        a: '1',
+        b: '2',
+        [Symbol.iterator]() {
+          let index = 0;
+          const keys = Object.keys(this);
+          console.log(keys, 'kkkk');
+          return {
+            next() {
+              if (index < keys.length) {
+                return {
+                  done: false,
+                  value: obj[keys[index++]],
+                };
+              }
+              return { done: true, value: undefined };
+            },
+          };
+        },
+      };
+      var [a, b] = obj;
+      console.log(a, b);
+    </script>
+  </body>
+</html>

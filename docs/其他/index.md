@@ -39,3 +39,103 @@ WebSocket 的长连接是真正的全双工，TCP 链路建立后，双方可以
 - 建立过程
   1. 浏览器发起一个 http 请求建立连接 ，请求地址以 ws://开头，请求头 Upgrade: websocket 和 Connection: Upgrade 表示这个连接将要被转换为 WebSocket 连接。
   2. 服务器响应请求 响应头 HTTP/1.1 101 Switching Protocols 和 Upgrade: websocket 表示本次连接的 HTTP 协议即将被更改（代码 101），改为指定的 WebSocket 协议
+
+### 工具，公共组件，自定义的 hooks
+
+1. 工具函数
+
+2. 公共组件
+   下拉选择 searchSelect 快速查看 quickview pdf 阅读 审批流 图片预览
+
+3. 自定义的 hooks
+   字典解析：useDict 表格单项提取：useTableItem
+
+   自定义 Hook 更适合于抽象状态逻辑和功能，以便在多个组件间共享和复用。
+   组件 更侧重于 UI 的结构和视图表现，它们是构建用户界面的基础
+
+### 大屏适配
+
+![alt text](image.png)
+
+1. 将 px 转换为 vw vh 实现
+
+```js
+// 使用 scss 的 math 函数，https://sass-lang.com/documentation/breaking-changes/slash-div
+ @use "sass:math";
+
+// 默认设计稿的宽度
+$designWidth: 1920;
+// 默认设计稿的高度
+$designHeight: 1080;
+
+// px 转为 vw 的函数
+@function vw($px) {
+  @return math.div($px, $designWidth) \* 100vw;
+}
+
+// px 转为 vh 的函数
+@function vh($px) {
+  @return math.div($px, $designHeight) \* 100vh;
+}
+```
+
+2. scare 实现
+
+```js
+<div className="screen-wrapper">
+    <div className="screen" id="screen">
+
+    </div>
+ </div>
+
+   handleScreenAuto() {
+   const designDraftWidth = 1920; //设计稿的宽度
+   const designDraftHeight = 960; //设计稿的高度
+   // 根据屏幕的变化适配的比例
+   const scale =
+   document.documentElement.clientWidth /
+   document.documentElement.clientHeight <
+   designDraftWidth / designDraftHeight
+   ? document.documentElement.clientWidth / designDraftWidth
+   : document.documentElement.clientHeight / designDraftHeight;
+   // 缩放比例
+   document.querySelector(
+   '#screen',
+   ).style.transform = `scale(${scale}) translate(-50%, -50%)`;
+   },
+
+
+   .screen-root {
+    height: 100%;
+    width: 100%;
+    .screen {
+        display: inline-block;
+        width: 1920px;  //设计稿的宽度
+        height: 960px;  //设计稿的高度
+        transform-origin: 0 0;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+    }
+}
+```
+
+3. rem+vw+vh
+
+```js
+.postcssrc.js配置文件
+module.exports = {
+  plugins: {
+    autoprefixer: {},
+    '@njleonzhang/postcss-px-to-rem': {
+      unitToConvert: 'px', // (String) 要转换的单位，默认是 px。
+      widthOfDesignLayout: 1920, // (Number) 设计布局的宽度。对于pc仪表盘，一般是 1920.
+      unitPrecision: 3, // (Number) 允许 rem 单位增长到的十进制数字.
+      selectorBlackList: ['.ignore', '.hairlines'], // (Array) 要忽略并保留为 px 的选择器.
+      minPixelValue: 1, // (Number) 设置要替换的最小像素值.
+      mediaQuery: false, // (Boolean) 允许在媒体查询中转换 px.
+    },
+  },
+};
+
+```

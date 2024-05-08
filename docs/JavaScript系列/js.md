@@ -170,19 +170,14 @@ function throttled(fn, delay) {
 
 ```js
 Function.prototype._new = function (fn, ...args) {
+  //创建一个空对象
+  // const obj = {}
+  // 将新对象的原型指向构造函数原型对象
+  //   obj.__proto__ = fn.prototype;
   var obj = Object.create(fn.prototype);
+  // 将构造函数的this指向新对象
   var ret = fn.apply(obj, args);
   return ret instanceof Object ? ret : obj;
-};
-
-// 或者
-Function.prototype._new = function () {
-  var obj = {};
-  var Constructor = Array.prototype.shift.call(arguments);
-
-  obj.__proto__ = Constructor.prototype;
-  var result = Constructor.call(obj, arguments);
-  return result instanceof Object ? result : obj;
 };
 ```
 
@@ -631,4 +626,3 @@ DOM：文档对象模型，提供文档的对象，如 document、element、even
 1. forEach()方法不会返回执行结果，而是 undefined。也就是说，forEach()会修改原来的数组。而 map()方法会得到一个新的数组并返回
 2. 能用 forEach()做到的，map()同样可以。反过来也是如此
 3. forEach()允许 callback 更改原始数组的元素。map()返回新的数组
-
