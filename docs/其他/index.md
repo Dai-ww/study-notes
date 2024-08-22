@@ -45,13 +45,27 @@ WebSocket 的长连接是真正的全双工，TCP 链路建立后，双方可以
 1. 工具函数
 
 2. 公共组件
-   下拉选择 searchSelect 快速查看 quickview pdf 阅读 审批流 图片预览
+   下拉选择 searchSelect
+   快速查看 quickview
+   pdf 阅读
+   审批流
+   图片预览
+   表单表格（vue）
 
 3. 自定义的 hooks
    字典解析：useDict 表格单项提取：useTableItem
-
    自定义 Hook 更适合于抽象状态逻辑和功能，以便在多个组件间共享和复用。
    组件 更侧重于 UI 的结构和视图表现，它们是构建用户界面的基础
+
+### 哪些 hooks 比较常用
+
+useEffect ：用于处理副作用，如数据请求、DOM 操作等。
+useState ：用于管理组件的状态，可以更新和读取状态。
+useRef ：用于获取 DOM 元素或组件的引用，可以避免在每次渲染时重新创建引用。
+useMemo ：用于缓存计算结果，避免重复计算。
+useCallback ：用于缓存函数，避免在每次渲染时重新创建函数。
+
+### 写过哪些 hooks
 
 ### 大屏适配
 
@@ -139,3 +153,11 @@ module.exports = {
 };
 
 ```
+
+### unocss 原子化
+
+UnoCSS 是一个即时的原子化 CSS 引擎，旨在灵活和可扩展
+
+### umi 优势
+
+### Restful 接口规范

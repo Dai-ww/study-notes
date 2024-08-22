@@ -335,7 +335,7 @@ run();
 
   > 通过 XMLHttpRequest 对象来向服务器发起异步请求，从服务器获得数据然后通过 JS 操作 dom 从而刷新页面
 
-- 原声写 ajax
+- 原生写 ajax
 
 ```js
 var xhr = new XMLHttpRequest();
@@ -600,6 +600,9 @@ console.log(temp); //ReferenceError: temp is not defined
 ### 页面上有 1w 个 button 如何绑定事件
 
 事件委托：利用冒泡机制，将事件委托给父元素，父元素负责处理所有子元素的事件。
+
+事件捕获和事件冒泡：事件冒泡是事件从最内层元素开始，然后逐级向上传播，事件捕获是事件从最外层元素开始，然后逐级向下传播。
+捕获--目标--冒泡
 
 ### js 哪些操作会造成内存泄漏
 
