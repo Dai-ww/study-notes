@@ -27,7 +27,7 @@ html 解析 -> 样式计算 -> 布局 -> 分层 -> 绘制 -> 分块 -> 光栅化
 - 什么是 reflow
 
   - reflow 的本质是重新计算 layout （一般是 width height padding margin 等改动造成）
-  - 为了避免连续多次的操作导致布局树反复计算，浏览器会合并这些操作，当 js 执行完成后才统一计算，改动属性造成的回流是异步完成的。由于这个原因，当 js 获取获取布局属性时，了能会导致获取到的不是最新布局信息，浏览器在权衡利弊下，座钟决定获取属性会立即 reflow。（避免反复多次获取布局属性）
+  - 为了避免连续多次的操作导致布局树反复计算，浏览器会合并这些操作，当 js 执行完成后才统一计算，改动属性造成的回流是异步完成的。由于这个原因，当 js 获取获取布局属性时，了能会导致获取到的不是最新布局信息，浏览器在权衡利弊下，最终决定获取属性会立即 reflow。（避免反复多次获取布局属性）
 
 - 什么是 refaint
   - refaint 的本质是重新根据分层信息绘制指令（一般 可见样式变动会导致）
@@ -110,7 +110,32 @@ html 解析 -> 样式计算 -> 布局 -> 分层 -> 绘制 -> 分块 -> 光栅化
     </style>
 ```
 
-### width:100%与 width:auto 区
+### css 画三角形
+
+<style>
+  .triangle {
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top: 10px solid red;
+  }
+</style>
+
+### key 的作用
+
+key 给每一个元素提供了唯一的类似 id 的属性，依靠这个 key 可以更快速更准确的对比新旧虚拟 DOM，提高性能。
+**用 index 作为 key 可能会引发的问题**
+(1)若对数据进行:逆序添加、逆序删除等破坏顺序操作:
+会产生没有必要的真实 DOM 更新==>界面效果没问题,但效率低。
+(2)如果结构中还包含输入类的 DOM:
+会产生错误 DOM 更新==>界面有问题。
+
+**开发中如何选择 key**
+(1).最好使用每条数据的唯一标识作为 key,比如 id、手机号、身份证号、学号等唯一值.
+(2).如果不存在对数据的逆序添加、逆序删除等破坏顺序操作，仅用于渲染列表用于展示，
+使用 index 作为 key 是没有问题的。
+
+### width:100%与 width:auto 区别
 
 - 都是由最近父级决定，不过 auto 不会超出父级，100%的 padding，border 写多了容易超出父级，一般都是用 auto，不写默认就是 auto
   width:auto;会包含 padding,border,margin 的宽度，width:100%;在 content-box 下是不会包含这三个的宽度的
@@ -152,6 +177,43 @@ html 解析 -> 样式计算 -> 布局 -> 分层 -> 绘制 -> 分块 -> 光栅化
 
 - 标准模型: box-sizing:content-box;
 - IE 模型: box-sizing:border-box;
+
+### h5 新增标签
+
+语义化标签：<header>、<nav>、<article>、<section>、<aside>、<footer>
+视频标签：<video>、<audio>
+img 标签 alt 和 title 区别：当图片无法加载或显示时，alt 属性中的文本将作为替代显示，帮助用户理解图片的内容。title 属性 ‌ 则是在用户将鼠标悬停在元素上时显示额外的信息或描述
+
+### css 选择器
+
+标签选择器，类选择器、id 选择器、属性选择器、伪类选择器、伪元素选择器
+
+嵌套的越深,权重就越高。!important>id>class>元素选择器
+
+### 溢出显示省略号
+
+单行文本：
+
+<style>
+  .single{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+多行文本：
+
+<style>
+  .multi{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // 弹性伸缩盒子模型显示
+    display: -webkit-box;
+    // 限制显示的行数
+    -webkit-line-clamp: 2;
+  }
+</style>
 
 ### cookie、localStorage、sessionStorage
 

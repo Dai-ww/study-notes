@@ -1,3 +1,8 @@
+### typeof 能判断哪些类型，如何判断一个对象具体是什么类型
+
+可以判断一些基本数据类型包括 string、number、boolean、undefined、null,引用数据类型返回都 Object
+可以使用判断 Object.prototype.toString.call(obj)会返回一个字符串，形式为[object Type]
+
 ### ES6 新特性
 
 - let const 关键字
@@ -629,3 +634,15 @@ DOM：文档对象模型，提供文档的对象，如 document、element、even
 1. forEach()方法不会返回执行结果，而是 undefined。也就是说，forEach()会修改原来的数组。而 map()方法会得到一个新的数组并返回
 2. 能用 forEach()做到的，map()同样可以。反过来也是如此
 3. forEach()允许 callback 更改原始数组的元素。map()返回新的数组
+
+### js 数字精度丢失问题
+
+原因：浮点数在计算机中存储时，实际上是以二进制形式存储的，而二进制的存储位数有限，导致浮点数在计算时，可能会出现精度丢失的问题。
+解决：1. toFixed()方法：将浮点数转换为字符串，并指定小数位数。2. toPrecision()方法：将浮点数转换为字符串，并指定显示位数。3. Number.toFixed()方法：将浮点数转换为字符串，并指定小数位数
+
+### commonjs 和 es6 模块化区别
+
+1. 语法区别：一个使用 require 函数引入模块 module.exports 导出模块，另一个使用 import，export 来引入和导出模块。
+2. 运行机制区别：CommonJS 是运行时加载，ES6 是编译时加载。CommonJS 是同步加载，ES6 是异步加载。
+3. 使用场景：CommonJS 用于 nodejs 环境，ES6 用于客户端。
+   可使用 Babel、Webpack 等工具将 CommonJS 转换为 ES6 模块。

@@ -53,6 +53,88 @@
         return res;
       };
       console.log(getRow(rowIndex));
+
+      // 防抖函数
+      function debounce(fn, delay) {
+        let timer = null;
+        return function () {
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fn.apply(this, arguments);
+          }, delay);
+        };
+      }
+
+      // 函数节流
+      function throttle(fn, delay) {
+        let timer = null;
+        return function () {
+          if (!timer) {
+            timer = setTimeout(() => {
+              fn.apply(this, arguments);
+              timer = null;
+            }, delay);
+          }
+        };
+      }
+
+      // 实现new
+      function myNew(fn, ...args) {
+        // 将新对象的原型指向构造函数的原型
+        const obj = Object.create(fn.prototype);
+        // 将构造函数的this指向新对象
+        const res = fn.apply(obj, args);
+        return typeof res === 'object' ? res : obj;
+      }
+
+      // 请求并发数量控制
+      const urls = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      const maxNum = 3;
+      async function run(urls, maxNum) {
+        let pool = [];
+        for (let i = 0; i < urls.length; i++) {
+          let promise = new Promise((resolve) => {
+            resolve(urls[i]);
+          });
+          promise.then((res) => {
+            console.log(`id${res}的请求已经处理完毕,当前并发为${pool.length}`);
+            pool.splice(pool.indexOf(promise), 1);
+          });
+          pool.push(promise);
+          if (pool.length === maxNum) {
+            await Promise.race(pool);
+          }
+        }
+      }
+      run(urls, maxNum);
+
+      // 实现call
+      Function.prototype.myCall = function (context, ...args) {
+        const key = Symbol('mycall');
+        context[key] = this;
+        const res = context[key](...args);
+        delete context[key];
+        return res;
+      };
+
+      // 实现apply
+      Function.prototype.myApply = function (context, args) {
+        const key = Symbol('myapply');
+        context[key] = this;
+        const res = context[key](...args);
+        delete context[key];
+        return res;
+      };
+
+      // 实现bind
+      Function.prototype.myBind = function (context) {
+        const fn = this;
+        return function (...args) {
+          return fn.apply(context, args);
+        };
+      };
     </script>
   </body>
 </html>

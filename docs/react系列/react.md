@@ -518,6 +518,7 @@ export default ChildJ
 ### hooks 使用
 
 - 在 if 中报错  
+  会破坏它们的执行顺序和依赖性，可能导致状态不一致和渲染问题
   因为 react 函数式组件每次渲染都会重新生成状态，且每次渲染都有一个状态序列，如果在 if 中调用，可能导致某次渲染时状态序列的缺失
 - 为什么 react 函数式组件 每次渲染都有一个状态序列
   因为在使用 useState 声明时，只赋给了变量初始值，并没有给状态加 key
@@ -526,3 +527,53 @@ export default ChildJ
 - 那在 vue3 中为什么不存在这个问题
   因为 vue3 的渲染函数只执行一次，在组件初次渲染的时候，会执行一次 setup 函数并创建响应式对象（返回的是一个函数），然后使用闭包进行缓存，后续组件会直接使用缓存的渲染函数
   react 返回的是一个视图，本质上是一个对象
+
+  **自定义 hooks**
+  自定义 Hook，实际上就是把很多重复的逻辑都放在一个函数里面，通过闭包的方式给 return 出来
+  **介绍自定义 hooks**
+  useProject: 表格中有一列被多处使用，抽出后导出它的列配置，组合好的 props，search 回调
+  useDict: 获取字典数据，用于转换对象为字典格式
+
+### Context API 使用方法如下：
+
+看成扩大版的 props，将全局的数据通过 provider 接口传递 value 给局部的组件,局部组件从 value 接口中传递的数据对象中获取读写接口
+
+- 创建 Context 对象
+  可以使用 React.createContext()方法创建一个 Context 对象，该方法返回一个包含 Provider 和 Consumer 组件的对象。Provider 组件用于提供数据，Consumer 组件用于消费数据。
+
+- 使用 Context 对象
+  我们可以在需要使用数据的组件中，使用 Consumer 组件来获取外层 Context 数提供的数据。Consumer 组件需要传入一个函数，该函数接收 Provider 组件提供的数据作为参数，并返回需要渲染的内容。
+  对于函数组件来说，还可以使用 useContext()钩子来获取 Provider 组件提供的数据，该钩子接收一个 Context 对象作为参数，并返回 Provider 组件提供的数据。
+
+### useMemo 和 useCallback 的区别
+
+- useMemo：用于缓存计算结果，避免重复计算。
+- useCallback：用于缓存函数，避免重复创建函数。适用于需要传递给子组件的事件处理函数
+  react.memo ：用于缓存组件，避免重复渲染。
+
+### redux 使用
+
+react-redux：将状态放在 store 中，组件可以通过 dispatch 触发 action，action 通过 reducer 更新 state，state 更新后，store 会通知所有订阅者，组件重新渲染。
+单一数据源，state 是只读的，唯一改变的方法是通过触发 action。
+适用场景：1.应用状态频繁变化，需要实时更新。2.更新该状态的逻辑很复杂，中大型代码量的应用，很多人协同开发
+
+connect 作用：1、获取 state 2、监听 store tree 的变化 3、将组件与 store 进行关联，将 store 的 state 映射到组件的 props 中，将组件的 props 映射到 store 的 dispatch 中，从而实现组件与 store 的双向绑定。
+
+### reacct 18 新特性
+
+1. 做了一些性能优化，批处理支持的范围变大，Promise，setTimeout，native event handlers 等这些非 React 原生的事件内部的更新也会得到合并
+2. 新增一些 hooks，useTransition（用于区分高优更新和非高优更新的新概念）、useId（用于解决 SSR 时客户端与服务端难以生成统一的 ID 的问题）
+
+### react-router
+
+1. hash：HashRouter
+   hash 值改变，触发全局 window 对象上的 hashchange 事件。所以 hash 模式路由就是利用 hashchange 事件监听 URL 的变化，从而进行 DOM 操作来模拟页面跳转
+2. history: BrowserRouter
+
+### 组件
+
+纯函数组件：无状态，无生命周期
+受控组件：一个表单元素的值由组件的状态控制，而不是 Dom 元素自身控制
+高阶组件：接受一个组件为参数的函数，返回一个新的组件，用于增强或者修改组件的行为。
+
+### hooks 优点

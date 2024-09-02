@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //深拷贝
+      function deepCopy(obj, hash = new WeakMap()) {
+        if (typeof obj !== 'object') return obj;
+        if (hash.has(obj)) return hash.get(obj);
+        if (obj instanceof Date) return new Date(obj);
+        if (obj instanceof RegExp) return new RegExp(obj);
+        let allDesc = Object.getOwnPropertyDescriptors(obj);
+        let cloneObj = Object.create(Object.getPrototypeOf(obj), allDesc);
+        hash.set(obj, cloneObj);
+        for (const key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            cloneObj[key] = deepCopy(obj[key], hash);
+          }
+        }
+        return cloneObj;
+      }
+
+      const original = {
+        number: 1,
+        message: 'hello',
+        date: new Date(),
+        regExp: /test/,
+        innerObj: {
+          a: 5,
+          b: 'text',
+        },
+        arr: [1, 2, 3],
+      };
+
+      const copied = deepCopy(original);
+      console.log(copied);
+    </script>
+  </body>
+</html>

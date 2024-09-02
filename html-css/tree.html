@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 数组转树形结构
+      //   function array2tree(arr, parentId = null) {
+      //     const tree = [];
+      //     for (let item of arr) {
+      //       if (item.parentId === parentId) {
+      //         const children = array2tree(arr, item.id);
+      //         if (children.length) {
+      //           item.children = children;
+      //         }
+      //         tree.push(item);
+      //       }
+      //     }
+      //     return tree;
+      //   }
+
+      //   function array2tree(arr) {
+      //     let treeMap = {};
+      //     let tree = [];
+      //     arr.forEach((item) => {
+      //       treeMap[item.id] = { ...item, children: [] };
+      //       if (item.parentId === null) {
+      //         tree.push(treeMap[item.id]);
+      //       } else {
+      //         if (!treeMap[item.parentId]) {
+      //           treeMap[item.parentId] = { children: [] };
+      //         }
+      //         treeMap[item.parentId].children.push(treeMap[item.id]);
+      //       }
+      //     });
+      //     return tree;
+      //   }
+
+      //   function array2tree(arr, parentId = null) {
+      //     let treeMap = new Map();
+      //     console.log(arr.filter((item) => item.parentId === parentId));
+      //     arr
+      //       .filter((item) => item.parentId === parentId)
+      //       .forEach((item) =>
+      //         treeMap.set(item.id, {
+      //           ...item,
+      //           children: array2tree(arr, item.id),
+      //         })
+      //       );
+      //     console.log(treeMap);
+      //     return Array.from(treeMap.values());
+      //   }
+      function array2tree(arr, parentId = null) {
+        return arr
+          .filter((item) => item.parentId === parentId)
+          .map((item) => ({
+            ...item,
+            children: array2tree(arr, item.id),
+          }));
+      }
+
+      const arr = [
+        { id: 1, parentId: null },
+        { id: 2, parentId: 1 },
+        { id: 3, parentId: 2 },
+        { id: 4, parentId: 3 },
+        { id: 5, parentId: 4 },
+        { id: 6, parentId: 5 },
+        { id: 7, parentId: 6 },
+        { id: 8, parentId: 7 },
+      ];
+      console.log(array2tree(arr), 'lololo');
+    </script>
+  </body>
+</html>
