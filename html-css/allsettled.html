@@ -36,6 +36,12 @@
       allSettled([1, 2, 3]).then((res) => {
         console.log(res);
       });
+
+      function arraytotree(arr, parentId = null) {
+        return arr
+          .filter((item) => item.parentId === parentId)
+          .map((item) => ({ ...item, children: arraytotree(arr, item.id) }));
+      }
     </script>
   </body>
 </html>
