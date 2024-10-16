@@ -133,7 +133,6 @@ uniapp 中，可以通过 uni.setStorageSync 和 uni.getStorageSync 来设置和
 
 1. 数据安全性
 2. 数据量大
-   **小程序为什么大多数用 post**
 
 为什么要四次挥手
 websocket 消息通知场景
