@@ -17,9 +17,9 @@
 
 **不同点：**
 
-1. type 可以声明任何类型，inter face 只能声明对象
+1. type 可以声明任何类型，interface 只能声明对象
 2. type 不能继承，interface 能继承
-3. 同名 type 只能有一个，同名 interface 可以多个
+3. interface可以重复声明，会合并在一起，type不可以
 4. 使用 interface 描述‘数据结构’，使用 type 描述‘类型关系’
 
 ### ts 中的泛型

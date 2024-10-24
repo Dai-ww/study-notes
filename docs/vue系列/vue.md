@@ -181,7 +181,7 @@ Vuex 中所有的状态更新的唯一途径都是 mutation，异步操作通过
 - hash：即地址栏 URL 中的 # 符号。hash 虽然出现在 URL 中，但不会被包括在 HTTP 请求中，对后端完全没有影响，其原理是 onhashchange 事件
 - history：pushState() 和 replaceState()。通过这两个 API 可以改变 url 地址且不会发送请求，不仅可以读取历史记录栈，还可以对浏览器历史记录栈进行修改
   **区别**：前面的 hashchange，你只能改变#后面的 url 片段。而 pushState 设置的新 URL 可以是与当前 URL 同源的任意 URL。
-  history 模式则会将 URL 修改得就和正常请求后端的 URL 一样,如后端没有配置对应/user/id 的路由处理，则会返回 404 错误
+  history 模式则会将 URL 修改得就和正常请求后端的 URL 一样,如果没有配置服务器端的相应路由，浏览器会发起服务器请求，但由于服务器上没有对应的资源，通常会导致404错误。
 
   **如何进行路由配置**
 
